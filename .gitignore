@@ -1,0 +1,12 @@
+# Node.js
+node_modules/
+
+# Output files
+data/output.*
+
+# Environment variables
+.env
+
+# Editor files
+.vscode/
+.idea/
