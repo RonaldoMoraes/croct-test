@@ -2,7 +2,6 @@ const SqliteTranslator = require('./sqliteTranslator');
 const IpStackTranslator = require('./ipStackTranslator');
 
 class TranslatorFactory {
-
     static createTranslator(type) {
         if (type === 'sqlite') {
             return new SqliteTranslator();

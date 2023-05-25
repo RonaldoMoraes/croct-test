@@ -1,4 +1,5 @@
 const fs = require('fs');
+const filterData = require('../utils/filterData');
 
 class CSVOutputWriter {
     constructor(outputFilePath) {
@@ -8,16 +9,7 @@ class CSVOutputWriter {
     }
 
     write(data) {
-        const filteredData = {
-            id: data.id ?? null,
-            timestamp: data.timestamp ?? null,
-            ip: data.ip ?? null,
-            latitude: data.latitude ?? null,
-            longitude: data.longitude ?? null,
-            country: data.country ?? null,
-            region: data.region ?? null,
-            city: data.city ?? null,
-        };
+        const filteredData = filterData(data);
 
         this.outputStream.write(`${Object.values(filteredData)}\n`);
     }

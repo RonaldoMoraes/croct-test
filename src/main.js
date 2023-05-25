@@ -1,7 +1,3 @@
-const OutputFactory = require('./outputWriters/outputFactory');
-const InputFactory = require('./inputReaders/inputFactory');
-const TranslatorFactory = require('./ipTranslators/translatorFactory');
-
 const argv = require('yargs')
     .usage('Usage: $0 --translator <translator> --input <input> --output <output>')
     .demandOption(['translator', 'input', 'output'], 'Please specify the type of data translator, input, and output.')
@@ -9,6 +5,10 @@ const argv = require('yargs')
     .choices('input', ['jsonl', 'csv'])
     .choices('output', ['jsonl', 'csv'])
     .parse(process.argv.slice(2));
+
+const OutputFactory = require('./outputWriters/outputFactory');
+const InputFactory = require('./inputReaders/inputFactory');
+const TranslatorFactory = require('./ipTranslators/translatorFactory');
 
 const { input, translator, output } = argv;
 
