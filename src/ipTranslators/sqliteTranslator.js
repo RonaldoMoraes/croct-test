@@ -1,5 +1,5 @@
-const Translator = require('./translator');
 const sqlite3 = require('sqlite3').verbose();
+const Translator = require('./translator');
 
 class SQLiteTranslator extends Translator {
     constructor() {
@@ -12,14 +12,14 @@ class SQLiteTranslator extends Translator {
 
     getLocation(ip) {
         return new Promise((resolve, reject) => {
-            const query = `SELECT latitude, longitude, country, state, city, ip FROM IPs WHERE ip = ? LIMIT 1`;
+            const query = 'SELECT latitude, longitude, country, state, city, ip FROM IPs WHERE ip = ? LIMIT 1';
             this.db.get(query, [ip], (error, row) => {
                 if (error) {
                     console.error(error.message);
-                    reject(error)
+                    reject(error);
                     return;
                 }
-                
+
                 if (row) {
                     resolve(row ?? {});
                 } else {

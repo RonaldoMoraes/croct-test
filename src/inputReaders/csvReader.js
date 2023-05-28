@@ -8,11 +8,10 @@ class CSVReader {
         this.rowCount = 0;
         this.headers;
         this.file = path.resolve('data/input.csv');
-        this.inputStream = fs.createReadStream(this.file);
     }
 
     getReadStream() {
-        return this.inputStream;
+        return fs.createReadStream(this.file);
     }
 
     parseLine(line) {

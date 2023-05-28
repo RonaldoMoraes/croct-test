@@ -1,5 +1,5 @@
-require('dotenv').config();
 const axios = require('axios');
+
 const apiKey = process.env.IPSTACK_API_KEY;
 const Translator = require('./translator');
 
