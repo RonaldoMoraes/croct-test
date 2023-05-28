@@ -9,12 +9,12 @@
 const OutputFactory = require('./outputWriters/outputFactory');
 const InputFactory = require('./inputReaders/inputFactory');
 const TranslatorFactory = require('./ipTranslators/translatorFactory');
-// const RedisStorage = require('./repository/redisStorage');
 const storage = require('./repository/redisStorage');
-// const { input, translator, output } = argv;
-const { input, translator, output } = {input: 'csv', translator: 'sqlite', output: 'jsonl'};
+const readline = require('readline');
 
-// const storage = new RedisStorage('location');
+// const { input, translator, output } = argv;
+const { input, translator, output } = {input: 'jsonl', translator: 'sqlite', output: 'csv'};
+
 const ipTranslator = TranslatorFactory.createTranslator(translator);
 const inputReader = InputFactory.createInputReader(input);
 const outputWriter = OutputFactory.createOutputWriter(output);
@@ -25,30 +25,57 @@ process.on('SIGINT', () => {
     outputWriter.close();
 });
 
+async function processLines(rl) {
+    for await (const line of rl) {
+        const processedLine = inputReader.parseLine(line);
+        if (processedLine !== undefined) await handleEvent(processedLine, outputWriter);
+    }
+  
+    outputWriter.close();
+    console.info('File processing completed.');
+}
 
 async function makeItHappen() {
     try {
-      await storage.client.connect();
-      inputReader.readEvents().then(async (events) => {
-          for (const event of events) {
-            await handleEvent(event);
-          }
-      });
+        await storage.client.connect();
+        const inputStream = inputReader.getReadStream();
+
+        const rl = readline.createInterface({
+            input: inputStream,
+            crlfDelay: Infinity
+        });
+
+        processLines(rl)
+        .catch((error) => {
+            console.error('Error processing lines:', error);
+        });
+
     } catch (error) {
       console.error('Running custom error:', error);
     }
 }
 
-async function handleEvent(event) {
-    const location = await ipTranslator.fetchLocation(event.ip);
-    const translatedEvent = { ...event, ...location };
-    const isWithinTimeWindow = await locationService.isWithinTimeWindow(translatedEvent.id, translatedEvent.ip, translatedEvent.timestamp, translatedEvent);
-    if (isWithinTimeWindow) {
-        return;
-    }
+async function handleEvent(event, outputStream) {
 
-    storage.store(`${translatedEvent.id}-${translatedEvent.ip}-${translatedEvent.timestamp}`, translatedEvent);
-    outputWriter.write(translatedEvent);
+    try {
+        const location = await ipTranslator.fetchLocation(event.ip);
+        const translatedEvent = { ...event, ...location };
+        const isWithinTimeWindow = await locationService.isWithinTimeWindow(
+            translatedEvent.id, 
+            translatedEvent.ip, 
+            translatedEvent.timestamp
+            );
+
+        if (isWithinTimeWindow) return;
+
+        storage.store(
+            `${translatedEvent.id}-${translatedEvent.ip}-${translatedEvent.timestamp}`, 
+            translatedEvent
+        );
+        outputStream.write(translatedEvent);
+    } catch (error) {
+        console.error('Error handling event:', error);
+    }
 }
 
 makeItHappen();
