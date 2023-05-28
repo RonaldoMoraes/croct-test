@@ -6,11 +6,13 @@ class Translator {
     }
 
     getLocation(_ip) {
-        throw new Error('Not implemented');
+        return new Promise((resolve, reject) => {
+            reject(new Error('Not implemented'));
+        });
     }
 
     async fetchLocation(ip) {
-        return (await this.getLocation(ip)) ?? null;
+        return await this.getLocation(ip);
     }
 }
 

@@ -17,13 +17,8 @@ class SQLiteTranslator extends Translator {
                 if (error) {
                     console.error(error.message);
                     reject(error);
-                    return;
-                }
-
-                if (row) {
-                    resolve(row ?? {});
                 } else {
-                    resolve({});
+                    resolve(row ?? {});
                 }
             });
         });
