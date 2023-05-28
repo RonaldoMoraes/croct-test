@@ -3,9 +3,9 @@ const JSONLReader = require('./jsonlReader');
 
 class InputFactory {
     static createInputReader(type) {
-        if (type === 'jsonl') {
+        if (type === 'csv') {
             return new CSVReader();
-        } if (type === 'csv') {
+        } if (type === 'jsonl') {
             return new JSONLReader();
         }
 
