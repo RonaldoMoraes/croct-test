@@ -1,0 +1,24 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=test
+    command: npm run test:coverage
+    depends_on:
+      - redis
+    networks:
+      - mynetwork
+
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
