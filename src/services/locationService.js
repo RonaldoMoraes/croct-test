@@ -10,6 +10,7 @@ class LocationService {
         const keys = await this.storage.keys(keyPattern);
 
         // TODO: Use Promise.all to make this faster
+        // TODO: Pass this logic to the storage class, with compareTimeWindow as a callback
         for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
             const storedEvent = await this.storage.find(key);
