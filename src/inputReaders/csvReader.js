@@ -1,26 +1,37 @@
 const fs = require('fs');
-const csv = require('csv-parser');
 const path = require('path');
+// Could be using other delimiters too, but for now, just assume normal CSV
+const csvDelimiter = ',';
 
 class CSVReader {
-    readEvents() {
-        return new Promise((resolve, reject) => {
-            const events = [];
-            const file = path.resolve('data/input.csv');
+    constructor() {
+        this.rowCount = 0;
+        this.headers;
+        this.file = path.resolve('data/input.csv');
+        this.inputStream = fs.createReadStream(this.file);
+    }
 
-            fs.createReadStream(file)
-                .pipe(csv())
-                .on('data', (data) => {
-                    events.push(data);
-                })
-                .on('end', () => {
-                    resolve(events);
-                })
-                .on('error', (error) => {
-                    console.log('Error reading CSV file:', error);
-                    reject(error);
-                });
+    getReadStream() {
+        return this.inputStream;
+    }
+
+    parseLine(line) {
+        if (this.rowCount === 0) {
+            this.headers = line.split(csvDelimiter);
+            this.rowCount++;
+            return;
+        }
+
+        return this.createLineObj(line);
+    }
+
+    createLineObj(line) {
+        const row = {};
+        const values = line.split(csvDelimiter);
+        this.headers.forEach((header, index) => {
+            row[header] = values[index];
         });
+        return row;
     }
 }
 
