@@ -1,5 +1,5 @@
 <h1 align="center">
-    Croc
+    Croct
 </h1>
 
 <h4 align="center"> 
@@ -7,11 +7,11 @@
 </h4>
 <p align="center">	
 	
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/RonaldoMoraes/croc-test">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/RonaldoMoraes/croct-test">
     
   
-  <a href="https://github.com/RonaldoMoraes/croc-test/commits/master">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/RonaldoMoraes/croc-test">
+  <a href="https://github.com/RonaldoMoraes/croct-test/commits/master">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/RonaldoMoraes/croct-test">
   </a>
 
   <a>
@@ -60,10 +60,10 @@ This test was develop using the following stack:
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/RonaldoMoraes/croc-test
+$ git clone https://github.com/RonaldoMoraes/croct-test
 
 # Enter in the project folder
-$ cd croc-test
+$ cd croct-test
 
 # You can change the env vars as you want (`npm install` should do this for you)
 $ cp .env.example .env
@@ -78,10 +78,10 @@ $ docker-compose up
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/RonaldoMoraes/croc-test
+$ git clone https://github.com/RonaldoMoraes/croct-test
 
 # Enter in the project folder
-$ cd croc-test
+$ cd croct-test
 
 # You can change the env vars as you want (`npm install` should do this for you)
 $ cp .env.example .env
